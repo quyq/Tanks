@@ -4,7 +4,7 @@ BUILD = build
 BIN = $(BUILD)/bin
 RESOURCES_DIR = resources
 
-ifeq ($(OS),Windows_NT)
+ifeq ($(OS),Windows_NT_MingW)
 	CC = $(MINGW_HOME)/bin/mingw32-g++.exe
 	INCLUDEPATH = -I$(RESOURCES_DIR)/SDL/i686-w64-mingw32/include
 	LFLAGS = -mwindows -O
