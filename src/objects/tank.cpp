@@ -150,8 +150,7 @@ void Tank::update(Uint32 dt)
         }
     }
 
-
-    // Obsługa pocisku
+    // missile handling
     for(auto bullet : bullets) bullet->update(dt);
     bullets.erase(std::remove_if(bullets.begin(), bullets.end(), [](Bullet*b){if(b->to_erase) {delete b; return true;} return false;}), bullets.end());
 }
@@ -161,7 +160,7 @@ Bullet* Tank::fire()
     if(!testFlag(TSF_LIFE)) return nullptr;
     if(bullets.size() < m_bullet_max_size)
     {
-        //podajemy początkową dowolną pozycję, bo nie znamy wymiarów pocisku
+        //we give the initial any position because we do not know the dimensions of the projectile
         Bullet* bullet = new Bullet(pos_x, pos_y);
         bullets.push_back(bullet);
 
@@ -192,7 +191,7 @@ Bullet* Tank::fire()
         else
             bullet->speed = AppConfig::bullet_default_speed;
 
-        bullet->update(0); //zmiana pozycji dest_rect
+        bullet->update(0); //change of position district
         return bullet;
     }
     return nullptr;
@@ -266,7 +265,7 @@ void Tank::setDirection(Direction d)
 
 void Tank::collide(SDL_Rect &intersect_rect)
 {
-    if(intersect_rect.w > intersect_rect.h) // kolizja od góry lub dołu
+    if(intersect_rect.w > intersect_rect.h) // collision from the top or bottom
     {
         if((direction == D_UP && intersect_rect.y <= collision_rect.y) ||
                 (direction == D_DOWN && (intersect_rect.y + intersect_rect.h) >= (collision_rect.y + collision_rect.h)))
@@ -368,9 +367,9 @@ void Tank::respawn()
     clearFlag(TSF_BOAT);
     m_flags = TSF_LIFE;
     update(0);
-    m_flags = TSF_CREATE; //resetujemy wszystkie inne flagi
+    m_flags = TSF_CREATE; //reset all other flags
 
-    //ustawienie porostokąta kolizji po wywołaniu update
+    //collision angle setting after triggering update
     collision_rect.x = 0;
     collision_rect.y = 0;
     collision_rect.h = 0;

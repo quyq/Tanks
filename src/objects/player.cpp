@@ -106,6 +106,7 @@ void Player::respawn()
     dest_rect.w = m_sprite->rect.w;
 
     setDirection(D_UP);
+    Mix_PlayChannel(SND_start, AppConfig::sounds[SND_start], 0);
     Tank::respawn();
     setFlag(TSF_SHIELD);
     m_shield_time = AppConfig::tank_shield_time / 2;

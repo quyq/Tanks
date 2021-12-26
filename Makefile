@@ -17,8 +17,8 @@ else
 	INCLUDEPATH =
 	LFLAGS = -O
 	CFLAGS = -c -Wall -std=c++11
-	LIBS = -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
-	APP_RESOURCES = font/prstartk.ttf png/texture.png levels
+	LIBS = -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
+	APP_RESOURCES = font/prstartk.ttf png/texture.png levels sounds
 	RESOURCES = $(APP_RESOURCES)
 endif
 
