@@ -41,6 +41,7 @@ void App::run()
         if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 512)<0) return;
         if(Mix_AllocateChannels(4)<0) return;
         AppConfig::sounds[SND_start] = Mix_LoadWAV("sounds/start.wav");
+        AppConfig::sounds[SND_fire] = Mix_LoadWAV("sounds/fire.wav");
 
         srand(time(NULL)); //inicjowanie generatora pseudolosowego
 

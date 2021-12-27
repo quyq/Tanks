@@ -135,6 +135,7 @@ Bullet* Player::fire()
     Bullet* b = Tank::fire();
     if(b != nullptr)
     {
+        Mix_PlayChannel(SND_fire, AppConfig::sounds[SND_fire], 0);
         if(star_count > 0) b->speed = AppConfig::bullet_default_speed * 1.3;
         if(star_count == 3) b->increased_damage = true;
     }
