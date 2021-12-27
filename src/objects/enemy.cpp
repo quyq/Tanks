@@ -175,6 +175,7 @@ void Enemy::destroy()
     if(lives_count <= 0)
     {
         lives_count = 0;
+        Mix_PlayChannel(SND_hit, AppConfig::sounds[SND_hit], 0);
         Tank::destroy();
     }
 }
