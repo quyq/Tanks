@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.0.0)
+cmake_minimum_required (VERSION 3.16...3.21)
 #run from build folder as: cmake -G "NMake Makefiles" ..
 #can specify -DCMAKE_GENERATOR_PLATFORM=x64 in command line, or do: set(CMAKE_GENERATOR_PLATFORM x64)
 #but similar like -A WIN32, this is not allowed for "NMake Makefiles" generator, so use customized var
@@ -10,8 +10,10 @@ include_directories(SDL/include)
 link_directories(SDL/lib/${lib_platform})
 link_libraries(SDL2main.lib SDL2.lib SDL2_image.lib SDL2_ttf.lib SDL2_mixer.lib)
 
-#set(EXECUTABLE_OUTPUT_PATH ./${CMAKE_BUILD_TYPE})
+#set(EXECUTABLE_OUTPUT_PATH ./${CMAKE_BUILD_TYPE}) # CMAKE_BUILD_TYPE is ''?
 set(EXECUTABLE_OUTPUT_PATH out) #set RUNTIME_OUTPUT_DIRECTORY doesn't work as expected
+# $EXECUTABLE_OUTPUT_PATH won't contain the build config debug/release? Below won't work either as likely CMAKE_BUILD_TYPE wasn't created yet before actual build started
+# set(EXE_FINAL_PATH ${EXECUTABLE_OUTPUT_PATH}/${CMAKE_BUILD_TYPE})
 
 #add_subdirectory(src)
 file(
@@ -21,11 +23,14 @@ file(
 )
 
 #as https://cmake.org/Bug/view.php?id=15703 copy with wildcart and path doesn't work, supposed fixed?
-#or shell/Windows console issue? For now, ignore this, just manually copy over the dlls
-#file(COPY ${PROJECT_SOURCE_DIR}/SDL/lib/${lib_platform}/*.dll DESTINATION ${EXECUTABLE_OUTPUT_PATH})
+#or shell/Windows console issue? For now, have to copy dlls one by one.
+file(COPY ${PROJECT_SOURCE_DIR}/SDL/lib/${lib_platform}/SDL2.dll       DESTINATION ${EXECUTABLE_OUTPUT_PATH})
+file(COPY ${PROJECT_SOURCE_DIR}/SDL/lib/${lib_platform}/SDL2_image.dll DESTINATION ${EXECUTABLE_OUTPUT_PATH})
+file(COPY ${PROJECT_SOURCE_DIR}/SDL/lib/${lib_platform}/SDL2_mixer.dll DESTINATION ${EXECUTABLE_OUTPUT_PATH})
+file(COPY ${PROJECT_SOURCE_DIR}/SDL/lib/${lib_platform}/SDL2_ttf.dll   DESTINATION ${EXECUTABLE_OUTPUT_PATH})
 file(COPY ${PROJECT_SOURCE_DIR}/resources/levels DESTINATION ${EXECUTABLE_OUTPUT_PATH})
 file(COPY ${PROJECT_SOURCE_DIR}/resources/sounds DESTINATION ${EXECUTABLE_OUTPUT_PATH})
-file(COPY ${PROJECT_SOURCE_DIR}/resources/png/texture.png DESTINATION ${EXECUTABLE_OUTPUT_PATH})
+file(COPY ${PROJECT_SOURCE_DIR}/resources/png/texture.png   DESTINATION ${EXECUTABLE_OUTPUT_PATH})
 file(COPY ${PROJECT_SOURCE_DIR}/resources/font/prstartk.ttf DESTINATION ${EXECUTABLE_OUTPUT_PATH})
 
 add_executable(${PROJECT_NAME} ${MY_SOURCE_FILES}) # do not specify WIN32 as conflict with SDL2main
