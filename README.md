@@ -79,15 +79,17 @@ Each field in the array should be one of following elements:
 #### Requirements
 
  - make
+ - g++
  - libsdl2-dev
  - libsdl2-ttf-dev
  - libsdl2-image-dev
+ - libsdl2-mixer-dev
  - doxygen-gui - _for docs generation (optional)_
  - doxygen - _for docs generation (optional)_
 
 On Debian based systems you can run (**apt** can by replaced with **apt-get** or **aptitude**):
 
-`sudo apt install libsdl2-dev libsdl2-ttf-dev libsdl2-image-dev` 
+`sudo apt install libsdl2-dev libsdl2-ttf-dev libsdl2-image-dev libsdl2-mixer-dev` 
 
 ### Mac
 
@@ -97,8 +99,9 @@ On Debian based systems you can run (**apt** can by replaced with **apt-get** or
  - sdl2
  - sdl2_ttf
  - sdl2_image
+ - sdl2_mixer
 
-`brew install sdl2 sdl2_ttf sdl2_image`
+`brew install sdl2 sdl2_ttf sdl2_image sdl2_mixer`
 
 #### Compilation
 
@@ -142,3 +145,16 @@ In **build/bin** there will be **Tanks.exe** binary file with all necessary reso
 Have fun.
 
 `cd build/bin && ./Tanks.exe`
+
+### Windows + CMake
+
+#### Requirements
+
+ - CMake
+ - Visual Studio Build Tools
+ - sdl2, sdl2_ttf, sdl2_image and sdl2_mixer x64 binary (https://www.libsdl.org)
+
+#### Compilation
+`mkdir Build; cd Build; cmake -G "NMake Makefiles" ..`
+`NMake`
+`cd out; Tanks.exe`
