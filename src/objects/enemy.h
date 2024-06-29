@@ -4,73 +4,73 @@
 #include "tank.h"
 
 /**
- * @brief Klasa zajmująca się ruchami wrogich czołgów.
+ * @brief Class responsible for the movements of enemy tanks.
  */
 class Enemy : public Tank
 {
 public:
     /**
-     * Tworzenie przeciwnika w pierwszym z położeń wrogów.
+     * Creating an enemy at one of the starting positions for enemies.
      * @see AppConfig::enemy_starting_point
      */
     Enemy();
     /**
-     * Tworzenie przeciwnika
-     * @param x - pozycja początkowa pozioma
-     * @param y - pozycja początkowa pionowa
-     * @param type - typ czołgu przeciwnika
+     * Creating an enemy
+     * @param x - initial horizontal position
+     * @param y - initial vertical position
+     * @param type - type of enemy tank
      */
     Enemy(double x, double y, SpriteType type);
 
     /**
-     * Funkcja rysuje czołg przeciwnika i jeżeli jest ustawiona flaga @a AppConfig::show_enemy_target to rysuję linią łączącą czołg z jego celem.
+     * The function draws the enemy tank and if the flag @a AppConfig::show_enemy_target is set, it draws a line connecting the tank with its target.
      */
     void draw();
     /**
-     * Funkcja uaktualnia położenie czołgu oraz decyduje o kirunku i czasie kolejnego wystrzału w zależności od typy wroga.
-     * @param dt - czas od ostatniego wywołania funkcji
+     * The function updates the position of the tank and decides on the direction and timing of the next shot depending on the type of enemy.
+     * @param dt - time since the last function call
      */
     void update(Uint32 dt);
     /**
-     * Zmniejszczenie poziomu pancerza o 1. Jeżeli poziom pancerza dojdze do zera następuje wybuch (zniszczenie) czołgu.
+     * Decrease the armor level by 1. If the armor level reaches zero, the tank explodes (is destroyed).
      */
     void destroy();
     /**
-     * Funkcja zwraca liczbę punktów jakie dostanie gracz za trafienie danego czołgu wroga.
-     * @return punkty
+     * The function returns the number of points the player gets for hitting a given enemy tank.
+     * @return points
      */
     unsigned scoreForHit();
 
     /**
-     * Pozycja do jakiej kieruje się czołg przeciwnika.
+     * The position towards which the enemy tank is heading.
      */
     SDL_Point target_position;
 
 private:
     /**
-     * Czas od ostatniej zmiany kierunku.
+     * Time since the last direction change.
      */
     Uint32 m_direction_time;
     /**
-     * Czas jazdy w danym kirunku. Czas po jakim nastąpi zmiana kierunku.
+     * Driving time in the current direction. Time after which the direction will change.
      */
     Uint32 m_keep_direction_time;
 
     /**
-     * Czas od ostatniej próby wznowienia jazdy
+     * Time since the last attempt to resume driving
      */
     Uint32 m_speed_time;
     /**
-     * Czas po jakim nastąpi kolejne wznowienie jazdy; ustawienie niezerowej prędkości.
+     * Time after which the next attempt to resume driving; setting a non-zero speed.
      */
     Uint32 m_try_to_go_time;
 
     /**
-     * Czas od ostatniej próby wystrzału pocisku.
+     * Time since the last attempt to fire a bullet.
      */
     Uint32 m_fire_time;
     /**
-     * Czas po jakim nastąpi próba kolejnego wystrzału.
+     * Time after which an attempt for the next shot will be made.
      */
     Uint32 m_reload_time;
 };

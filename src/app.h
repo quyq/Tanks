@@ -5,7 +5,7 @@
 
 /**
  * @brief
- * Klasa główna aplikacji. Jej działanie jest równoważne z działaniem aplikacji.
+ * Main class of the application. Its operation is equivalent to the operation of the application.
  */
 class App
 {
@@ -13,26 +13,26 @@ public:
     App();
     ~App();
     /**
-     * Funkcja zawiera inicjalizację biblioteki SDL2, silnika gry, wczytanie tekstur oraz czcionek.
-     * Po poprawnej inicjalizacji następuje wejście w pętlę główną programu, która kolejno: reaguje na zdarzenie,
-     * uaktualnia obecny stan aplikacji, rysuje obiety na ekranie.
+     * The function includes initialization of the SDL2 library, game engine, loading textures, and fonts.
+     * After successful initialization, it enters the main loop of the program, which sequentially: responds to an event,
+     * updates the current state of the application, draws objects on the screen.
      */
     void run();
     /**
-     * Funkcja obsługująca zdarzenia czekające w kolejce.
+     * Function handling events waiting in the queue.
      */
     void eventProces();
 private:
     /**
-     * Zmienna podtrzymująca działanie pętli głównej programu.
+     * Variable maintaining the operation of the main program loop.
      */
     bool is_running;
     /**
-     * Aktualny stan aplikacji.
+     * Current state of the application.
      */
     AppState* m_app_state;
     /**
-     * Obiekt okna aplikacji.
+     * Application window object.
      */
     SDL_Window* m_window;
 };

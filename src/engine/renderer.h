@@ -7,7 +7,7 @@
 
 /**
  * @brief
- * Klasa odpowiada za rysowanie obiektów na ekranie.
+ * The class is responsible for rendering objects on the screen.
  */
 class Renderer
 {
@@ -15,74 +15,74 @@ public:
     Renderer();
     ~Renderer();
     /**
-     * Wczytanie tekstury z pliku oraz stworzenie renderera związanego z oknem aplikacji.
-     * @param window - wskaźnik na obiekt zawartości okna aplikacji
+     * Loading a texture from a file and creating a renderer associated with the application window.
+     * @param window - pointer to the application window content object
      */
     void loadTexture(SDL_Window* window);
     /**
-     * Wczytwanie czcionki w trzech różnych rozmiarach.
+     * Loading the font in three different sizes.
      */
     void loadFont();
     /**
-     * Czyszczenie bufora ekranu.
+     * Clearing the screen buffer.
      */
     void clear();
     /**
-     * Prezentacja bufora ekranu.
+     * Presenting the screen buffer.
      */
     void flush();
     /**
-     * Przerysowanie fragmentu tekstury na fragment bufora ekranu.
-     * @param texture_src - źródłowy prostokąt z tekstury
-     * @param window_dest - docelowy prostokąt na buforze ekranu
+     * Redrawing a part of the texture onto a part of the screen buffer.
+     * @param texture_src - source rectangle from the texture
+     * @param window_dest - target rectangle on the screen buffer
      */
     void drawObject(const SDL_Rect *texture_src, const SDL_Rect *window_dest);
     /**
-     * Ustawienie skali wyświetlanego bufora, tak aby miał zachowane proporcje planszy oraz aby był umiejscowiony w środku okna aplikacji.
-     * @param xs - skala pozioma jako stosunek szerokości okna do szerokości mapy
-     * @param ys - skala pionowa jako stosunek wysokości okna do wysokości mapy
+     * Setting the scale of the displayed buffer, so that it maintains the proportions of the board and is positioned in the center of the application window.
+     * @param xs - horizontal scale as the ratio of window width to map width
+     * @param ys - vertical scale as the ratio of window height to map height
      * @see AppConfig::map_rect
      */
     void setScale(float xs, float ys);
     /**
-     * Rysowanie tekstu w buforze okna w wybranej pozycji początkowej.
-     * @param start - położenie punktu początkowego rysowanego tekstu; ujemna wartości którejś ze wspołrzędnych skutkuje wyśrodkowaniem napisu w tej osi
-     * @param text - rysowany tekst
-     * @param text_color - kolory rysowanego tekst
-     * @param font_size - numer czcionki za pomocą, której będzi rysoweny tekst; dostępne trzy wartośc: 1, 2, 3
+     * Drawing text in the window buffer at a selected starting position.
+     * @param start - position of the starting point of the drawn text; a negative value of any coordinate results in centering the text on that axis
+     * @param text - text to draw
+     * @param text_color - color of the drawn text
+     * @param font_size - font number with which the text will be drawn; three values available: 1, 2, 3
      */
     void drawText(const SDL_Point* start, std::string text, SDL_Color text_color, int font_size = 1);
     /**
-     * Funkcja rysująca prostokątk w buforze okna.
-     * @param rect - położneie prostokątku na planszy
-     * @param rect_color - kolor prostokątku
-     * @param fill - zmienna mówiącza czy prostokąt ma być zamalowany
+     * Function drawing a rectangle in the window buffer.
+     * @param rect - position of the rectangle on the board
+     * @param rect_color - color of the rectangle
+     * @param fill - variable indicating whether the rectangle should be filled
      */
     void drawRect(const SDL_Rect* rect, SDL_Color rect_color, bool fill = false);
 
 private:
     /**
-     * Wskaźnik na obiekt związany z buforem okna.
+     * Pointer to the object associated with the window buffer.
      */
     SDL_Renderer* m_renderer;
     /**
-     * Wskaźnik na teksturę zawierającą wszystkie widoczne elementy gry.
+     * Pointer to the texture containing all visible elements of the game.
      */
     SDL_Texture* m_texture;
     /**
-     * Wskaźnik na teksturę pomocniczą przy rysowaniu tekstu na ekranie.
+     * Pointer to the auxiliary texture for drawing text on the screen.
      */
     SDL_Texture* m_text_texture;
     /**
-     * Czcionka o rozmiarze 28.
+     * Font of size 28.
      */
     TTF_Font* m_font1;
     /**
-     * Czcionka o rozmiarze 14.
+     * Font of size 14.
      */
     TTF_Font* m_font2;
     /**
-     * Czcionka o rozmiarze 10.
+     * Font of size 10.
      */
     TTF_Font* m_font3;
 };

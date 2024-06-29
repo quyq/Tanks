@@ -27,7 +27,7 @@ App::~App()
 void App::run()
 {
     is_running = true;
-    //inicjalizacja SDL i utworzenie okan
+    // Initialize SDL and create a window
 
     if(SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO) == 0)
     {
@@ -44,7 +44,7 @@ void App::run()
         AppConfig::sounds[SND_fire] = Mix_LoadWAV("sounds/fire.wav");
         AppConfig::sounds[SND_hit] = Mix_LoadWAV("sounds/hit.wav");
 
-        srand(time(NULL)); //inicjowanie generatora pseudolosowego
+        srand(time(NULL)); // initializing the pseudo-random number generator
 
         Engine& engine = Engine::getEngine();
         engine.initModules();

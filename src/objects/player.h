@@ -4,98 +4,98 @@
 #include "tank.h"
 
 /**
- * @brief Klasa odpowiadająca czołgom graczy.
+ * @brief Class corresponding to player tanks.
  */
 class Player : public Tank
 {
 public:
 
     /**
-     * @brief Struktura przechowująca klawiszę odpowiadające sterowaniem czołgiem gracza.
+     * @brief Structure storing keys corresponding to controlling the player's tank.
      */
     struct PlayerKeys
     {
         PlayerKeys(): up(SDL_SCANCODE_UNKNOWN), down(SDL_SCANCODE_UNKNOWN), left(SDL_SCANCODE_UNKNOWN), right(SDL_SCANCODE_UNKNOWN), fire(SDL_SCANCODE_UNKNOWN) {}
         PlayerKeys(SDL_Scancode u, SDL_Scancode d, SDL_Scancode l, SDL_Scancode r, SDL_Scancode f): up(u), down(d), left(l), right(r), fire(f) {}
         /**
-         * Klawisz odpowiadający jeździe w górę.
+         * Key corresponding to moving up.
          */
         SDL_Scancode up;
         /**
-         * Klawisz odpowiadający jeździe w dół.
+         * Key corresponding to moving down.
          */
         SDL_Scancode down;
         /**
-         * Klawisz odpowiadający jeździe w lewo.
+         * Key corresponding to moving left.
          */
         SDL_Scancode left;
         /**
-         * Klawisz odpowiadający jeździe w prawo.
+         * Key corresponding to moving right.
          */
         SDL_Scancode right;
         /**
-         * Klawisz odpowiadający wystrzałowi pocisku.
+         * Key corresponding to firing a bullet.
          */
         SDL_Scancode fire;
     };
 
     /**
-     * Tworzenie gracza w pierwszym z położeń graczy.
+     * Creating a player in one of the player starting positions.
      * @see AppConfig::player_starting_point
      */
     Player();
     /**
-     * Tworzenie czołgu gracza
-     * @param x - pozycja początkowa pozioma
-     * @param y - pozycja początkowa pionowa
-     * @param type - typ gracza
+     * Creating a player tank
+     * @param x - initial horizontal position
+     * @param y - initial vertical position
+     * @param type - player type
      */
     Player(double x, double y, SpriteType type);
 
 
     /**
-     * Funkcaj odpowiada za zmianę animacji czołgu gracza oraz za sprawdzeni stanu wciśniętych klawiszy i reakcja na te klawisze, które sterują czołgiem gracza.
-     * @param dt - czas od ostatwniego wywołania funkcji, wykorzystywany przy zmianie animacji
+     * The function is responsible for changing the player tank's animation and for checking the state of pressed keys and reacting to those keys that control the player's tank.
+     * @param dt - time since the last function call, used when changing animations
      */
     void update(Uint32 dt);
     /**
-     * Funkcja odpowiada za odjęcie życia, wyczyszczenie wszystkich flag i włączenie animacji powstawania czołgu.
+     * The function is responsible for subtracting a life, clearing all flags, and enabling the tank spawning animation.
      */
     void respawn();
     /**
-     * Funkcja odpowiada za włączenie animacji wybuchu czołgu jeżeli czołgu nie miał osłonki, łódki lub trzech gwiazdek.
+     * The function is responsible for enabling the tank explosion animation if the tank did not have a shield, boat, or three stars.
      */
     void destroy();
     /**
-     * Funkcja odpowiada za stworzenie pocisku jeżeli jeszcze nie stworzono maksymalnej ich ilości,
-     * nadaniu mu większej szybkości jeżeli gracz ma przynajmniej jedną gwiazdkę oraz dodaniu zwiększonych obrażeni jeżeli gracz ma trzy gwiazdki.
-     * @return wskaźnik na utworzony pocisk, jeżeli nie stworzono pocisku zwraca @a nullptr
+     * The function is responsible for creating a bullet if the maximum number has not yet been created,
+     * giving it greater speed if the player has at least one star, and adding increased damage if the player has three stars.
+     * @return pointer to the created bullet, if no bullet was created returns @a nullptr
      */
     Bullet* fire();
 
     /**
-     * Funkcja zmienia liczbę aktualnie posiadanych gwiazdek. Przy niezerowej liczbie gwiazdek zwiększana jest domyślna prędkość czołgu,
-     * a dla liczby gwiazdek większej od 1 oraz dla każdego dodatniego @a c zwiększana jest maksymalna liczba pocisków.
-     * @param c - zmiana liczby gwiazdek, może być ujemna
+     * The function changes the number of stars currently held. With a non-zero number of stars, the default speed of the tank is increased,
+     * and for a number of stars greater than 1 and for each positive @a c, the maximum number of bullets is increased.
+     * @param c - change in the number of stars, can be negative
      */
     void changeStarCountBy(int c);
 
     /**
-     * Klawiszcze sterujące ruchami aktualngo gracza.
+     * Keys controlling the movements of the current player.
      */
     PlayerKeys player_keys;
     /**
-     * Aktualnie posiadane punkty przez gracza.
+     * Points currently held by the player.
      */
     unsigned score;
 
 private:
     /**
-     * Aktualnie posiadana liczba gwiazdek; może się zawierać w przedziale [0, 3].
+     * The current number of stars held; can range from [0, 3].
      */
     int star_count;
     /**
-     * Czas jaki minął od ostatnego wystrzału pocisku.
+     * Time that has passed since the last bullet was fired.
      */
     Uint32 m_fire_time;
 };

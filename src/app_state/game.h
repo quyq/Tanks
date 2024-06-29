@@ -12,244 +12,244 @@
 #include <string>
 
 /**
- * @brief Klasa odpowiada za ruch wszytkich czołgów oraz interaakcje między czołgami oraz między czołgami a innymi obiektami na mapie
+ * @brief The class is responsible for the movement of all tanks and interactions between tanks and between tanks and other objects on the map.
  */
 class Game : public AppState
 {
 public:
     /**
-     * Domyślny konstruktor - umożliwia grę dla jednego gracza
+     * Default constructor - allows for single player game
      */
     Game();
     /**
-     * Konstruktor pozwalający podać początkową liczbę graczy. Liczba graczy może być równa 1 lub 2, każda inna wartość spowoduje uruchomienie gry dla jednego gracza.
-     * Konstruktor jest wywoływany w @a Menu::nextState.
-     * @param players_count - liczba graczy 1 lub 2
+     * Constructor that allows specifying the initial number of players. The number of players can be 1 or 2, any other value will start the game for one player.
+     * This constructor is called in @a Menu::nextState.
+     * @param players_count - number of players 1 or 2
      */
     Game(int players_count);
     /**
-     * Konstruktor przyjmujący już isteniejących graczy.
-     * Wywoływany w @a Score::nextState
-     * @param players - kontener z graczami
-     * @param previous_level - zmienna przechowująca numer poprzedniego poziomu
+     * Constructor that takes already existing players.
+     * Called in @a Score::nextState
+     * @param players - container with players
+     * @param previous_level - variable storing the number of the previous level
      */
     Game(std::vector<Player*> players, int previous_level);
 
     ~Game();
     /**
-     * Funkcja zwraca @a true jeśli gracza zniszczył wszystkich przeciwników albo gdy orzełek został trafiony lub gracz stracił wszystkie życia, czyli nastąpiła przegrana.
-     * @return @a true lub @a false
+     * The function returns @a true if the player has destroyed all enemies or when the eagle was hit or the player lost all lives, which means a loss.
+     * @return @a true or @a false
      */
     bool finished() const;
     /**
-     * Funkcja wyświetla na początku rundy jej numer. W czasie rozgrywki funkcja odpowiada za rysowanie poziomu (murków, kamieni, wody, lodu, krzewów),
-     * graczy, wrogów, bonusów, orzełka, statusu gry na panelu po prawej stronie (pozostałych przeciwników, pozostałe życia graczy, nr rundy).
-     * Po przegranej lub podczas pauzy wyświetla odpowiędnią informację na środku ekranu.
+     * At the beginning of the round, the function displays its number. During the game, the function is responsible for drawing the level (walls, stones, water, ice, bushes),
+     * players, enemies, bonuses, the eagle, game status on the right panel (remaining enemies, remaining lives of players, round number).
+     * After a loss or during a pause, it displays the corresponding information in the middle of the screen.
      */
     void draw();
     /**
-     * Funkcja aktualizuje stan wszystkich obiektów na planszy (czołgów, bonusów, przeszkód). Sprawdza ponadto kolizje między czołgami, między czołgami i elementami poziomu oraz między pociskami a czołgami i elementami mapy.
-     * Naspępuje tu usuwanie zniszczonych obiektów, dodawanie nowych wrogich czołgów oraz sprawdzenie warunków zakończenia rundy.
-     * @param dt - czas od ostatniego wywołania funkcji w milisekundach
+     * The function updates the state of all objects on the board (tanks, bonuses, obstacles). It also checks collisions between tanks, between tanks and level elements, and between bullets and tanks and map elements.
+     * Here, destroyed objects are removed, new enemy tanks are added, and the conditions for ending the round are checked.
+     * @param dt - time since the last function call in milliseconds
      */
     void update(Uint32 dt);
     /**
-     * Następuje tu reakcja na klawisze:
-     * @li Enter - pauza gry
-     * @li Esc - powrót do menu
-     * @li N - przejście do następnej rundy, jeśli gra nie jest przegrana
-     * @li B - przejście do poprzedniej rundy, jeśli gra nie jest przegrana
-     * @li T - pokazanie ścieżek do celów wrogich czołgów
-     * @param ev - wskaźnik na unię SDL_Event przechowującą typ i parametry różnych zdarzeń, w tym zdarzeń klawiatury
+     * Here, the reaction to keys occurs:
+     * @li Enter - pause game
+     * @li Esc - return to menu
+     * @li N - move to the next round, if the game is not lost
+     * @li B - move to the previous round, if the game is not lost
+     * @li T - show paths to targets of enemy tanks
+     * @param ev - pointer to the SDL_Event union storing the type and parameters of various events, including keyboard events
      */
     void eventProcess(SDL_Event* ev);
     /**
-     * Przejście do następnyego stanu.
-     * @return wskaźnik na obiekty klasy @a Scores jeżeli gracz przeszedł rundę lub przegrał. Jeżeli gracz wcisną Esc funkcja zwraca wskaźnik na obiekt @a Menu.
+     * Transition to the next state.
+     * @return pointer to @a Scores class objects if the player passed the round or lost. If the player pressed Esc, the function returns a pointer to @a Menu object.
      */
     AppState* nextState();
 
 private:
     /**
-     * Wczytanie mapy poziomu z pliku
-     * @param path - ścieżka do pliku mapy
+     * Load the level map from a file
+     * @param path - path to the map file
      */
     void loadLevel(std::string path);
     /**
-     * Usuwanie pozostałych wrogów, graczy, obiektów mapy oraz bonusów
+     * Removing remaining enemies, players, map objects, and bonuses
      */
     void clearLevel();
     /**
-     * Wczytanie nowego poziomu i utworzenie nowych graczy jeśli jeszcze nie istnieją.
+     * Load a new level and create new players if they do not already exist.
      * @see Game::loadLevel(std::string path)
      */
     void nextLevel();
     /**
-     * Tworzenie nowego wroga jeżeli liczba przeciwników na planszy jest mniejsza od 4 przy założeniu, że nie stworzono już wszystkich 20 wrogów na mapie.
-     * Funkcja generuje różne poziomy pancerza wrogów w zależności od poziomu; im wyższy numer rundy tym większa szansa, żeby przeciwnik miał czwarty poziom pancerza.
-     * Numer poziomu pancerza mówi ile razy należy trafić pociskiem w przeciwnika aby go zniszczyć. Numer ten przyjmuje wartości od 1 do 4 i odpowiada różnym kolorom czołgu.
-     * Wygenerowany przeciwnik ma dodatkowe szanse na to, że trafienie w niego spowoduje powstanie bonusu na planszy.
+     * Create a new enemy if the number of enemies on the board is less than 4, assuming that not all 20 enemies on the map have been created yet.
+     * The function generates different levels of enemy armor depending on the level; the higher the round number, the greater the chance that the enemy will have fourth level armor.
+     * The armor level number indicates how many times an enemy must be hit with a bullet to be destroyed. This number ranges from 1 to 4 and corresponds to different tank colors.
+     * The generated enemy has an additional chance of creating a bonus on the board when hit.
      */
     void generateEnemy();
     /**
-     * Funkcja generuje losowy bonus na mapie i ustawia go w pozycji nie kolidującej z orzełkiem.
+     * The function generates a random bonus on the map and places it in a position that does not collide with the eagle.
      */
     void generateBonus();
 
     /**
-     * Sprawdzenie czy czołg może swobodnie jechać naprzód, jeżeli nie zatrzymuje go. Funkcja nie pozwala na wyjazd poza planszę.
-     * Jeżeli czołg wjechał na lód powoduje to jego poślizg. Jeżeli czołg posiada bonus "Łódź" może przechodzić przez wodę. Czołgi nie mogą przejechać orzełka.
-     * @param tank - czółg, dla którego sprawdzamy kolizje
-     * @param dt - ostatnia zmiana czasu, przy założeniu niewielkich zmian w kolejnych krokach czasowych możemy przewidywać kolejne położenie czołgu i odpowiednio reagować.
+     * Check if the tank can freely move forward, if not, it stops. The function prevents leaving the play area.
+     * If the tank enters ice, it causes it to slide. If the tank has the "Boat" bonus, it can cross water. Tanks cannot cross the eagle.
+     * @param tank - the tank for which collisions are checked
+     * @param dt - the last time change, assuming small changes in subsequent time steps, we can predict the next position of the tank and react accordingly.
      */
     void checkCollisionTankWithLevel(Tank* tank, Uint32 dt);
     /**
-     * Sprawdzenie czy nie występuje kolizja między badanymi czołgami, jeśli tak oba są zatrzymywane.
+     * Check for collisions between the tanks being examined, if so, both are stopped.
      * @param tank1
      * @param tank2
      * @param dt
      */
     void checkCollisionTwoTanks(Tank* tank1, Tank* tank2, Uint32 dt);
     /**
-     * Sprawdznie czy wybrany pocisk nie koliduje z jakimś elementem mapy (woda i lód są pomijane). Jeżeli tak pocisk i obiekt są niszczone.
-     * Jeśli trafiono orzełka to następuje przegrana.
-     * @param bullet - pocisk
+     * Check if the selected bullet collides with any map element (water and ice are ignored). If so, both the bullet and the object are destroyed.
+     * If the eagle is hit, the game is lost.
+     * @param bullet - bullet
      */
     void checkCollisionBulletWithLevel(Bullet* bullet);
     /**
-     * Sprawdzenie kolizji pocisku z krzewami (krzakami) na mapie. Niszczenie krzaków i pocisku nastepuje wtedy, gdy ma on zwiększone obrażenia.
-     * @param bullet - pocisk
+     * Check for bullet collisions with bushes on the map. Bushes and the bullet are destroyed when it has increased damage.
+     * @param bullet - bullet
      * @see Bullet::increased_damage
      */
     void checkCollisionBulletWithBush(Bullet* bullet);
     /**
-     * Sprawdzanie czy dany gracz trafił w wybranego przeciwnika. Jeśli tak gracz dostaje punkty a przeciwnik traci jeden poziom pancerza.
-     * @param player - gracz
-     * @param enemy - przeciwnik
+     * Check if a player has hit a selected enemy. If so, the player scores points and the enemy loses one armor level.
+     * @param player - player
+     * @param enemy - enemy
      */
     void checkCollisionPlayerBulletsWithEnemy(Player* player, Enemy* enemy);
     /**
-     * Sprawdzenie czy przeciwnik nie trafił pociskiem w gracza. Jeżeli tak to gracz traci jedno życie o ile nie miał osłonki.
-     * @param enemy - przeciwnik
-     * @param player - gracz
+     * Check if an enemy bullet has hit a player. If so, the player loses one life unless they had a shield.
+     * @param enemy - enemy
+     * @param player - player
      */
     void checkCollisionEnemyBulletsWithPlayer(Enemy* enemy, Player* player);
     /**
-     * Jeżeli dwa pociski się zderzą oba zostają niszczone.
+     * If two bullets collide, both are destroyed.
      * @param bullet1
      * @param bullet2
      */
     void checkCollisionTwoBullets(Bullet* bullet1, Bullet* bullet2);
     /**
-     * Sprawdzenie czy gracz nie wziął bonusu. Jeśli tak następuje odpowiednia reakcja:
-     * @li Granat - widoczni wrogowie zostają zniszczeni
-     * @li Hełm - gracz dostaje czasową osłonę od wszystkich pocisków
-     * @li Zegar - zatrzymanie widocznych przeciwników
-     * @li Łopata - Stworzenie czasowo kamiennego muru wokół orzełka
-     * @li Czołg - zwiększenie o 1 liczby żyć gracza
-     * @li Gwiazda - ulepszenie czołgu gracza (zwiększenie szybkości, liczby pocisków)
-     * @li Broń - maksymalne ulepszenie gracza
-     * @li Łódź - możliwość przejazdu przez wodę
-     * Za zdobycie bonusu gracz dostaje dodatkowe punkty.
+     * Check if a player has taken a bonus. If so, the appropriate reaction occurs:
+     * @li Grenade - visible enemies are destroyed
+     * @li Helmet - the player gets a temporary shield from all bullets
+     * @li Clock - stops visible enemies
+     * @li Shovel - Temporarily creates a stone wall around the eagle
+     * @li Tank - increases the player's lives by 1
+     * @li Star - upgrades the player's tank (increases speed, number of bullets)
+     * @li Gun - maximizes player upgrades
+     * @li Boat - allows crossing water
+     * The player receives additional points for collecting a bonus.
      * @param player
      * @param bonus
      */
     void checkCollisionPlayerWithBonus(Player* player, Bonus* bonus);
 
     /**
-     * Liczaba kolumn siatki mapy.
+     * Number of columns in the map grid.
      */
     int m_level_columns_count;
     /**
-     * Liczaba wierszy siatki mapy.
+     * Number of rows in the map grid.
      */
     int m_level_rows_count;
     /**
-     * Przeszkody na mapie.
+     * Obstacles on the map.
      */
     std::vector< std::vector <Object*> > m_level;
     /**
-     * Krzaki na mapie.
+     * Bushes on the map.
      */
     std::vector<Object*> m_bushes;
 
     /**
-     * Zbiór wrogów.
+     * Set of enemies.
      */
     std::vector<Enemy*> m_enemies;
     /**
-     * Zbiór pozostałych graczy.
+     * Set of remaining players.
      */
     std::vector<Player*> m_players;
     /**
-     * Zbiór zabity graczy.
+     * Set of killed players.
      */
     std::vector<Player*> m_killed_players;
     /**
-     * Zbiór bonusów na mapie.
+     * Set of bonuses on the map.
      */
     std::vector<Bonus*> m_bonuses;
     /**
-     * Obiekt orzełka.
+     * The eagle object.
      */
     Eagle* m_eagle;
 
     /**
-     * Obecny numer poziomu.
+     * Current level number.
      */
     int m_current_level;
     /**
-     * Liczba graczy w wybranym trybie gry 1 lub 2.
+     * Number of players in the selected game mode 1 or 2.
      */
     int m_player_count;
     /**
-     * Liczba pozostałych wrogów do zabicia na danym poziomie
+     * Number of remaining enemies to kill on the current level
      */
     int m_enemy_to_kill;
 
     /**
-     * Zmienna przechowyje, czy w tym momencie wyświetlany jest ekran startowy poziomu.
+     * Variable stores whether the level start screen is currently being displayed.
      */
     bool m_level_start_screen;
     /**
-     * Zmienna przechowuje informacje, czy orzełek jest chroniony kamiennym murem.
+     * Variable stores whether the eagle is protected by a stone wall.
      */
     bool m_protect_eagle;
     /**
-     * Czas jak długo wyświetlany jest już ekran startowy poziomu.
+     * Time how long the level start screen has been displayed.
      */
     Uint32 m_level_start_time;
     /**
-     * Czas od ostatniego stworzenia przeciwnika.
+     * Time since the last enemy was created.
      */
     Uint32 m_enemy_redy_time;
     /**
-     * Czas jaki minął od wygrania mapy.
+     * Time elapsed since winning the map.
      */
     Uint32 m_level_end_time;
     /**
-     * Czas jak długo orzełek jest już chroniony przez kamienny mur.
+     * Time how long the eagle has been protected by a stone wall.
      */
     Uint32 m_protect_eagle_time;
 
     /**
-     * Stan przegranej.
+     * Game over state.
      */
     bool m_game_over;
     /**
-     * Pozycja napisu "GAME OVER" jeśli @a m_game_over jest równe @a true.
+     * Position of the "GAME OVER" text if @a m_game_over is equal to @a true.
      */
     double m_game_over_position;
     /**
-     * Zmienna przechowuje informację, czy należy zakończyć bieżący stan gry i przejść do wyświetlania wyników lub manu gry.
+     * Variable stores information whether to end the current game state and move to displaying scores or game menu.
      */
     bool m_finished;
     /**
-     * Zmienna mówi czy włączona została pauza.
+     * Variable indicates whether pause has been activated.
      */
     bool m_pause;
     /**
-     * Numer pozycji now stworzonego przeciwnika. Zmieniana przy każdym tworzeniu przeciwnika.
+     * Position number for newly created enemy. Changed with each enemy creation.
      */
     int m_enemy_respown_position;
 };

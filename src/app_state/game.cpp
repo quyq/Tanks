@@ -154,18 +154,18 @@ void Game::update(Uint32 dt)
         std::vector<Player*>::iterator pl1, pl2;
         std::vector<Enemy*>::iterator en1, en2;
 
-        //sprawdzenie kolizji czołgów graczy ze sobą
+        // Check collision of player tanks with each other
         for(pl1 = m_players.begin(); pl1 != m_players.end(); pl1++)
             for(pl2 = pl1 + 1; pl2 != m_players.end(); pl2++)
                 checkCollisionTwoTanks(*pl1, *pl2, dt);
 
 
-        //sprawdzenie kolizji czołgów przeciwników ze sobą
+        // Check collision of enemy tanks with each other
         for(en1 = m_enemies.begin(); en1 != m_enemies.end(); en1++)
              for(en2 = en1 + 1; en2 != m_enemies.end(); en2++)
                 checkCollisionTwoTanks(*en1, *en2, dt);
 
-        //sprawdzenie kolizji kuli z lewelem
+        // Check collision of bullet with level
         for(auto enemy : m_enemies)
             for(auto bullet : enemy->bullets)
                 checkCollisionBulletWithLevel(bullet);
@@ -180,32 +180,32 @@ void Game::update(Uint32 dt)
         for(auto player : m_players)
             for(auto enemy : m_enemies)
             {
-                //sprawdzenie kolizji czołgów przeciwników z graczami
+                // Check collision of enemy tanks with players
                 checkCollisionTwoTanks(player, enemy, dt);
-                //sprawdzenie kolizji pocisków gracza z przeciwnikiem
+                // Check collision of player's bullets with enemy
                 checkCollisionPlayerBulletsWithEnemy(player, enemy);
 
-                //sprawdzenie kolizji pocisku gracza z pociskiem przeciwnika
+                // Check collision of player's bullet with enemy's bullet
                 for(auto bullet1 : player->bullets)
                      for(auto bullet2 : enemy->bullets)
                             checkCollisionTwoBullets(bullet1, bullet2);
             }
 
-        //sprawdzenie kolizji pocisku przeciknika z graczem
+        // Check collision of enemy bullet with player
         for(auto enemy : m_enemies)
             for(auto player : m_players)
                     checkCollisionEnemyBulletsWithPlayer(enemy, player);
 
-        //sprawdzanie kolizji gracza z bunusem
+        // Checking collision of player with bonus
         for(auto player : m_players)
             for(auto bonus : m_bonuses)
                 checkCollisionPlayerWithBonus(player, bonus);
 
-        //Sprawdzenie kolizji czołgów z poziomem
+        // Check collision of tanks with level
         for(auto enemy : m_enemies) checkCollisionTankWithLevel(enemy, dt);
         for(auto player : m_players) checkCollisionTankWithLevel(player, dt);
 
-        //nadanie celów przeciwników
+        // Assigning targets to enemies
         int min_metric; // 2 * 26 * 16
         int metric;
         SDL_Point target;
@@ -232,7 +232,7 @@ void Game::update(Uint32 dt)
             enemy->target_position = target;
         }
 
-        //Update wszystkich obiektów
+        // Update all objects
         for(auto enemy : m_enemies) enemy->update(dt);
         for(auto player : m_players) player->update(dt);
         for(auto bonus : m_bonuses) bonus->update(dt);
@@ -245,13 +245,13 @@ void Game::update(Uint32 dt)
 
         for(auto bush : m_bushes) bush->update(dt);
 
-        //usunięcie niepotrzebnych elementów
+        // Remove unnecessary elements
         m_enemies.erase(std::remove_if(m_enemies.begin(), m_enemies.end(), [](Enemy*e){if(e->to_erase) {delete e; return true;} return false;}), m_enemies.end());
         m_players.erase(std::remove_if(m_players.begin(), m_players.end(), [this](Player*p){if(p->to_erase) {m_killed_players.push_back(p); return true;} return false;}), m_players.end());
         m_bonuses.erase(std::remove_if(m_bonuses.begin(), m_bonuses.end(), [](Bonus*b){if(b->to_erase) {delete b; return true;} return false;}), m_bonuses.end());
         m_bushes.erase(std::remove_if(m_bushes.begin(), m_bushes.end(), [](Object*b){if(b->to_erase) {delete b; return true;} return false;}), m_bushes.end());
 
-        //dodanie nowego przeciwnika
+        // Add a new enemy
         m_enemy_redy_time += dt;
         if(m_enemies.size() < (AppConfig::enemy_max_count_on_map < m_enemy_to_kill ? AppConfig::enemy_max_count_on_map : m_enemy_to_kill) && m_enemy_redy_time > AppConfig::enemy_redy_time)
         {
@@ -375,12 +375,12 @@ void Game::eventProcess(SDL_Event *ev)
 }
 
 /*
-. = puste pole
-# = murek
-@ = kamień
-% = krzaki
-~ = woda
-- = lód
+. = empty field
+# = brick wall
+@ = stone
+% = bushes
+~ = water
+- = ice
  */
 
 void Game::loadLevel(std::string path)
@@ -419,10 +419,10 @@ void Game::loadLevel(std::string path)
         m_level_columns_count = m_level.at(0).size();
     else m_level_columns_count = 0;
 
-    //tworzymy orzełka
+    // create the eagle
     m_eagle = new Eagle(12 * AppConfig::tile_rect.w, (m_level_rows_count - 2) * AppConfig::tile_rect.h);
 
-    //wyczyszczenie miejsca orzełeka
+    // clear the eagle's space
     for(int i = 12; i < 14 && i < m_level_columns_count; i++)
     {
         for(int j = m_level_rows_count - 2; j < m_level_rows_count; j++)
@@ -488,7 +488,7 @@ void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
     SDL_Rect pr, *lr;
     Object* o;
 
-    //========================kolizja z elementami mapy========================
+    //========================collision with map elements========================
     switch(tank->direction)
     {
     case D_UP:
@@ -550,9 +550,9 @@ void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
             }
         }
 
-    //========================kolizja z granicami mapy========================
+    //========================collision with map borders========================
     SDL_Rect outside_map_rect;
-    //prostokąt po lewej stronie mapy
+    //rectangle on the left side of the map
     outside_map_rect.x = -AppConfig::tile_rect.w;
     outside_map_rect.y = -AppConfig::tile_rect.h;
     outside_map_rect.w = AppConfig::tile_rect.w;
@@ -561,7 +561,7 @@ void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
     if(intersect_rect.w > 0 && intersect_rect.h > 0)
         tank->collide(intersect_rect);
 
-    //prostokąt po prawej stronie mapy
+    //rectangle on the right side of the map
     outside_map_rect.x = AppConfig::map_rect.w;
     outside_map_rect.y = -AppConfig::tile_rect.h;
     outside_map_rect.w = AppConfig::tile_rect.w;
@@ -570,7 +570,7 @@ void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
     if(intersect_rect.w > 0 && intersect_rect.h > 0)
         tank->collide(intersect_rect);
 
-    //prostokąt po górnej stronie mapy
+    //rectangle on the top side of the map
     outside_map_rect.x = 0;
     outside_map_rect.y = -AppConfig::tile_rect.h;
     outside_map_rect.w = AppConfig::map_rect.w;
@@ -579,7 +579,7 @@ void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
     if(intersect_rect.w > 0 && intersect_rect.h > 0)
         tank->collide(intersect_rect);
 
-    //prostokąt po dolnej stronie mapy
+    //rectangle on the bottom side of the map
     outside_map_rect.x = 0;
     outside_map_rect.y = AppConfig::map_rect.h;
     outside_map_rect.w = AppConfig::map_rect.w;
@@ -589,7 +589,7 @@ void Game::checkCollisionTankWithLevel(Tank* tank, Uint32 dt)
         tank->collide(intersect_rect);
 
 
-   //========================kolizja z orzełkiem========================
+   //========================collision with the eagle========================
     intersect_rect = intersectRect(&m_eagle->collision_rect, &pr);
     if(intersect_rect.w > 0 && intersect_rect.h > 0)
         tank->collide(intersect_rect);
@@ -620,7 +620,7 @@ void Game::checkCollisionBulletWithLevel(Bullet* bullet)
     SDL_Rect intersect_rect;
     Object* o;
 
-    //========================kolizja z elementami mapy========================
+    //========================collision with map elements========================
     switch(bullet->direction)
     {
     case D_UP:
@@ -682,12 +682,12 @@ void Game::checkCollisionBulletWithLevel(Bullet* bullet)
             }
         }
 
-    //========================kolizja z granicami mapy========================
+    //========================collision with map borders========================
     if(br->x < 0 || br->y < 0 || br->x + br->w > AppConfig::map_rect.w || br->y + br->h > AppConfig::map_rect.h)
     {
         bullet->destroy();
     }
-    //========================kolizja z orzełkiem========================
+    //========================collision with the eagle========================
     if(m_eagle->type == ST_EAGLE && !m_game_over)
     {
         intersect_rect = intersectRect(&m_eagle->collision_rect, br);

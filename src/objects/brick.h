@@ -4,39 +4,39 @@
 #include "object.h"
 
 /**
- * @brief Klasa odpowiedzialna za pojedyńczy kawałek murku.
+ * @brief Class responsible for a single piece of the wall.
  */
 class Brick : public Object
 {
 public:
     /**
-     * Tworzenie murku w położeniu (0, 0).
+     * Creating a wall at position (0, 0).
      */
     Brick();
     /**
-     * Tworzenie murku
-     * @param x - pozycja początkowa pozioma
-     * @param y - pozycja początkowa pionowa
+     * Creating a wall
+     * @param x - initial horizontal position
+     * @param y - initial vertical position
      */
     Brick(double x, double y);
 
     /**
-     * Funkcja została zaimplementowana aby nie zmieniać collision_rect.
-     * @param dt - czas od ostatniego wywołania funkcji.
+     * The function was implemented to avoid changing collision_rect.
+     * @param dt - time since the last function call.
      */
     void update(Uint32 dt);
     /**
-     * Funkcja zmieniająca stan murku po trafieniu przez pocisk. Funkcja zmienia collision_rect.
-     * @param bullet_direction - kierunek ruchu pocisku
+     * Function changing the state of the wall after being hit by a bullet. The function changes collision_rect.
+     * @param bullet_direction - the direction of bullet movement
      */
     void bulletHit(Direction bullet_direction);
 private:
     /**
-     * Liczba trafień pucisków w murek.
+     * Number of bullet hits in the wall.
      */
     int m_collision_count;
     /**
-     * Jeden z dziesięciu stanów w jakich może być murek.
+     * One of the ten states in which the brick can be.
      */
     int m_state_code;
 };

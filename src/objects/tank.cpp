@@ -123,7 +123,7 @@ void Tank::update(Uint32 dt)
         if(m_frozen_time > AppConfig::tank_frozen_time) clearFlag(TSF_FROZEN);
     }
 
-    if(m_sprite->frames_count > 1 && (testFlag(TSF_LIFE) ? speed > 0 : true)) //brak animacji jeśli czołg nie prógbuje jechać
+    if(m_sprite->frames_count > 1 && (testFlag(TSF_LIFE) ? speed > 0 : true)) // stop animation if the tank is not trying to move
     {
         m_frame_display_time += dt;
         if(m_frame_display_time > (testFlag(TSF_MENU)  ? m_sprite->frame_duration / 2 : m_sprite->frame_duration))

@@ -17,7 +17,7 @@ Brick::Brick(double x, double y)
 
 void Brick::update(Uint32 dt)
 {
-    //ma nic nie robić (nie zmieniać collision_rect)
+    // Do nothing (do not change collision_rect)
 }
 
 void Brick::bulletHit(Direction bullet_direction)

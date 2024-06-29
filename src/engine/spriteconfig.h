@@ -7,7 +7,7 @@
 
 /**
  * @brief
- * Struktura przechowująca informacjie danym typie animacji obiektu.
+ * Structure storing information about a given type of object animation.
  */
 struct SpriteData
 {
@@ -16,55 +16,55 @@ struct SpriteData
         { rect.x = x; rect.y = y; rect.w = w; rect.h = h; frames_count = fc; frame_duration = fd; loop = l;}
 
     /**
-     * Pozycja i wymiary pierwszej klatki animacji
+     * Position and dimensions of the first animation frame
      */
     SDL_Rect rect;
     /**
-     * Liczba klatek w animacji.
+     * Number of frames in the animation.
      */
     int frames_count;
     /**
-     * Czas wyświetlania jednej klatki milisekundach.
+     * Time of displaying one frame in milliseconds.
      */
     unsigned frame_duration;
     /**
-     * Zmienna określająca czy animacja jest zapętlona.
+     * Variable determining whether the animation is looped.
      */
     bool loop;
 };
 
 /**
  * @brief
- * Klasa przechowuje informacjie o wszystkich typach animacji w grze.
+ * Class stores information about all types of animations in the game.
  */
 class SpriteConfig
 {
 public:
     /**
-     * W konstruktorze wykonywane są dodawania kolejnych animacji funkcją @a SpriteConfig::insert.
+     * The constructor performs the addition of subsequent animations using the @a SpriteConfig::insert function.
      */
     SpriteConfig();
     /**
-     * Pobranie wybranego typu animacji.
-     * @param sp - szukany typ animacji
-     * @return animację danego typu
+     * Retrieving a selected type of animation.
+     * @param sp - the searched type of animation
+     * @return animation of the given type
      */
     const SpriteData* getSpriteData(SpriteType sp) const;
 private:
     /**
-     * Kontener przechowujący wszystkie typy animacji.
+     * Container storing all types of animations.
      */
     std::map<SpriteType, SpriteData> m_configs;
     /**
-     * Funkcja używana przy dodawaniu nowego typu animacji.
-     * @param st - typ animacji
-     * @param x - połoźenie poziome pierwszej klatki animacji w teksturze
-     * @param y - połoźenie pionowe pierwszej klatki animacji w teksturze
-     * @param w - szerokości klatek animacji
-     * @param h - wysokości klatek animacji
-     * @param fc - liczba klatek w animacji
-     * @param fd - czas wyświetlania jednej klatki
-     * @param l - zapętlenie animacji
+     * Function used when adding a new type of animation.
+     * @param st - type of animation
+     * @param x - horizontal position of the first frame of animation in the texture
+     * @param y - vertical position of the first frame of animation in the texture
+     * @param w - width of the animation frames
+     * @param h - height of the animation frames
+     * @param fc - number of frames in the animation
+     * @param fd - time of displaying one frame
+     * @param l - looping of the animation
      */
     void insert(SpriteType st , int x, int y, int w, int h, int fc, int fd, bool l);
 };

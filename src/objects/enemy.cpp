@@ -171,7 +171,7 @@ void Enemy::update(Uint32 dt)
 void Enemy::destroy()
 {
     lives_count--;
-//    clearFlag(TSF_BONUS); //możliwe jednokrotne wypadnięcie bonusu
+//    clearFlag(TSF_BONUS); // possible one-time bonus drop
     if(lives_count <= 0)
     {
         lives_count = 0;

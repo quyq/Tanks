@@ -4,28 +4,28 @@
 #include "object.h"
 
 /**
- * @brief Klasa orzełka, którego gracze mają bronić a przeciwnicy zniszczyć.
+ * @brief Class of the eagle, which players must defend and enemies must destroy.
  */
 class Eagle : public Object
 {
 public:
     /**
-     * Tworzenie orzełka w położeniu (0, 0).
+     * Creating an eagle at position (0, 0).
      */
     Eagle();
     /**
-     * Tworzenie orzełka
-     * @param x - pozycja początkowa pozioma
-     * @param y - pozycja początkowa pionowa
+     * Creating an eagle
+     * @param x - initial horizontal position
+     * @param y - initial vertical position
      */
     Eagle(double x, double y);
     /**
-     * Aktualizacja animacji orzełka.
-     * @param dt - czas od ostatniego wywołania funkcji
+     * Updating the eagle's animation.
+     * @param dt - time since the last function call
      */
     void update(Uint32 dt);
     /**
-     * Wywołanie wybuchu orzełka.
+     * Triggering the eagle's explosion.
      */
     void destroy();
 };

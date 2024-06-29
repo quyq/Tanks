@@ -4,47 +4,47 @@
 #include "object.h"
 
 /**
- * @brief Klasa zajmująca się pociskami wystrzalanymi przez czołgi.
+ * @brief Class responsible for bullets fired by tanks.
  */
 class Bullet : public Object
 {
 public:
     /**
-     * Tworzenie pocisku w położeniu (0, 0).
+     * Creating a bullet at position (0, 0).
      */
     Bullet();
     /**
-     * Tworzenie pocisku
-     * @param x - pozycja początkowa pozioma
-     * @param y - pozycja początkowa pionowa
+     * Creating a bullet
+     * @param x - initial horizontal position
+     * @param y - initial vertical position
      */
     Bullet(double x, double y);
 
     /**
-     * Aktualizacja położenia pocisku.
-     * @param dt - czas od ostatniego wywołania funkcji
+     * Updating the bullet's position.
+     * @param dt - time since the last function call
      */
     void update(Uint32 dt);
     /**
-     * Włączenie animacji wybuchu pocisku.
+     * Activating the bullet's explosion animation.
      */
     void destroy();
     
     /**
-     * Prędkość poruszania się pocisku.
+     * The speed of the bullet's movement.
      */
     double speed;
     /**
-     * Zmienna przechowuje informację czy pocisk się z czymś zderzył.
+     * Variable stores information whether the bullet has collided with something.
      */
     bool collide;
     /**
-     * Zmienna przechowuje informację czy pocisk ma zwiększone obrażenia.
-     * Zwiększone obrażenia pozwalają niszczyć kamienny mur oraz krzaki.
+     * Variable stores information whether the bullet has increased damage.
+     * Increased damage allows destroying stone walls and bushes.
      */
     bool increased_damage;
     /**
-     * Kierunek przemieszczania się pocisku.
+     * The direction of the bullet's movement.
      */
     Direction direction;
 };

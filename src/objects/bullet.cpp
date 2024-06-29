@@ -62,7 +62,7 @@ void Bullet::update(Uint32 dt)
 
 void Bullet::destroy()
 {
-    if(collide) return; //zapogiega wielogrotnmu wywołaniu
+    if(collide) return; // prevents multiple invocations
 
     collide = true;
     speed = 0;

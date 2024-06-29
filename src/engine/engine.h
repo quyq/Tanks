@@ -5,7 +5,7 @@
 #include "spriteconfig.h"
 
 /**
- * @brief Klasa łączy elementy związane z działaniem programu.
+ * @brief The class connects elements related to the operation of the program.
  */
 class Engine
 {
@@ -13,30 +13,30 @@ public:
     Engine();
 
     /**
-     * @return statyczną instancję obiektu @a Engine
+     * @return a static instance of the @a Engine object
      */
-    static Engine& getEngine(); //silnik może być dostępny w każdym module korzystając jedynie z przestrzeni nazw a nie wskaźnika
+    static Engine& getEngine(); // the engine can be accessible in any module by using only the namespace, not a pointer
     /**
-     * Funkcja zamienia podaną wartość liczbową na tekst.
-     * @param num - liczba całkowita
-     * @return liczbę całkowitą jako tekst
+     * The function converts the given numerical value to text.
+     * @param num - an integer
+     * @return the integer as text
      */
     static std::string intToString(int num);
     /**
-     * Funkcja tworzy obiekty składowe silnika.
+     * The function creates component objects of the engine.
      */
     void initModules();
     /**
-     * Funkcja niszczy obiekty składowe silnika.
+     * The function destroys component objects of the engine.
      */
     void destroyModules();
 
     /**
-     * @return wskaźnik na obiekt Renderer pozwalający rysować na ekranie
+     * @return a pointer to the Renderer object allowing drawing on the screen
      */
     Renderer* getRenderer() const;
     /**
-     * @return wsaźnik na obiekt SpriteConfig przechowujący informacjie o teksturach
+     * @return a pointer to the SpriteConfig object storing information about textures
      */
     SpriteConfig* getSpriteConfig() const;
 private:

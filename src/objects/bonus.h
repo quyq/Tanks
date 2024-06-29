@@ -4,40 +4,40 @@
 #include "object.h"
 
 /**
- * @brief Klasa zajumująca wyświetlaniem bonusu.
+ * @brief Class responsible for displaying the bonus.
  */
 class Bonus : public Object
 {
 public:
     /**
-     * Tworzenie domyślnego bonusu - gwiazdki w położeniu (0, 0).
+     * Creating a default bonus - a star at position (0, 0).
      */
     Bonus();
     /**
-     * Tworzenie bonusu.
-     * @param x - pozycja początkowa pozioma
-     * @param y - pozycja początkowa pionowa
-     * @param type - typ bonusu
+     * Creating a bonus.
+     * @param x - initial horizontal position
+     * @param y - initial vertical position
+     * @param type - type of bonus
      */
     Bonus(double x, double y, SpriteType type);
 
     /**
-     * Funkcja rysująca bonus.
+     * Function for drawing the bonus.
      */
     void draw();
     /**
-     * Funkcja uaktualniająca animacje bonusu. Pozwolenie na usunięcie po odpowiednim czasie.
-     * Zwiększenie częstotliwości migania jeżeli bonus ma niedługo zostać usunięty.
-     * @param dt - czas od ostatniego wywołania funkcji
+     * Function for updating the bonus animation. Allows for deletion after a certain time.
+     * Increases the blinking frequency if the bonus is about to be removed soon.
+     * @param dt - time since the last function call
      */
     void update(Uint32 dt);
 private:
     /**
-     * Czas od stworzenie bonusu.
+     * Time since the bonus was created.
      */
     Uint32 m_bonus_show_time;
     /**
-     * Zmienna przechowująca informacje o tym czy bonus jest aktualnie wyświetlany; wykorzystywana do migania.
+     * Variable storing information about whether the bonus is currently being displayed; used for blinking.
      */
     bool m_show;
 };

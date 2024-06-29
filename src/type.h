@@ -49,15 +49,15 @@ enum SpriteType
 
 enum TankStateFlag
 {
-    TSF_SHIELD = 1 << 1, //po wzięciu hełmu
-    TSF_FROZEN = 1 << 2, //po wzięciu zegara przez przeciwnika
-    TSF_DESTROYED = 1 << 3, //po wzięciu bomby prez przeciwnika lub trafieniu kulą
-    TSF_BOAT = 1 << 4, //po wzięciu łódki, pozwala przechodzić przez wodę
-    TSF_BONUS = 1 << 5, //po trafieniu tego czołgu na mapie pojawi się bonus
-    TSF_ON_ICE = 1 << 6,  //jeżeli czołg jest na lodzie to się ślizga
-    TSF_CREATE = 1 << 7, //tworzenie czołgu
+    TSF_SHIELD = 1 << 1, // after taking a helmet
+    TSF_FROZEN = 1 << 2, // after the enemy takes a clock
+    TSF_DESTROYED = 1 << 3, // after taking a bomb by the enemy or being hit by a bullet
+    TSF_BOAT = 1 << 4, // after taking a boat, allows passing through water
+    TSF_BONUS = 1 << 5, // after hitting this tank a bonus appears on the map
+    TSF_ON_ICE = 1 << 6,  // if the tank is on ice, it slides
+    TSF_CREATE = 1 << 7, // creating a tank
     TSF_LIFE = 1 << 8,
-    TSF_MENU = 1 << 9 //dwukrotne przyspieszenie animacji
+    TSF_MENU = 1 << 9 // double speed of animation
 };
 
 enum Direction

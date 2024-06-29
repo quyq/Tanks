@@ -5,99 +5,99 @@
 
 /**
  * @brief
- * Klasa bazowa dla obiektów w grze.
+ * Base class for objects in the game.
  */
 class Object
 {
 public:
     /**
-     * Tworzenie obiektu w położeniu (0, 0).
+     * Creating an object at position (0, 0).
      */
     Object();
     /**
-     * Tworzenie obiektu.
-     * @param x - pozycja początkowa pozioma
-     * @param y - pozycja początkowa pionowa
-     * @param type - typ obiektu
+     * Creating an object.
+     * @param x - initial horizontal position
+     * @param y - initial vertical position
+     * @param type - type of object
      */
     Object(double x, double y, SpriteType type);
     /**
-     * Tworzenie obiektu.
-     * @param x - pozycja początkowa pozioma
-     * @param y - pozycja początkowa pionowa
-     * @param sprite - animacja obiektu danego typu
+     * Creating an object.
+     * @param x - initial horizontal position
+     * @param y - initial vertical position
+     * @param sprite - animation of the object of a given type
      */
     Object(double x, double y, const SpriteData* sprite);
     virtual ~Object();
 
     /**
-     * Rysowanie za pomocą metody @a drawObject z klasy @a Renderer, obiektu z tekstury o współrzędnych src_rect w obszar mapy o wpółrzędnych dest_rect.
+     * Drawing using the @a drawObject method from the @a Renderer class, the object from the texture at src_rect coordinates in the map area at dest_rect coordinates.
      */
     virtual void draw();
     /**
-     * Uaktualnienie prostokątan dest_rect na podstawie pozycji obiektu: pos_x, pos_y. Odliczanie czasu wyświetlania jednej klatki animacji i zmiana klatki po odliczeniu opowiedniego czasu.
-     * @param dt - czas od ostatniego wywołania funkcji, wykorzystywany do odliczania czasu wyświetlania klatki
+     * Updating the dest_rect rectangle based on the object's position: pos_x, pos_y. Counting the display time of one animation frame and changing the frame after counting the appropriate time.
+     * @param dt - time since the last function call, used to count the frame display time
      */
     virtual void update(Uint32 dt);
 
     /**
-     * Zmienna mowi czy obiekt ma być usunięty. Jeżeli zmianan jest równa @a true to nie aktualizacja i rysowanie obiektu jest pomijane.
+     * Variable says whether the object is to be deleted. If the change is equal to @a true, then updating and drawing the object is skipped.
      */
     bool to_erase;
     /**
-     * Prostokąt kolizji; może być mniejszy niż wymiary dest_rect.
+     * Collision rectangle; may be smaller than the dimensions of dest_rect.
      */
     SDL_Rect collision_rect;
     /**
-     * Pozycja docelowa obiektu na ekranie.
+     * The object's target position on the screen.
      */
     SDL_Rect dest_rect;
     /**
-     * Pozycja na teksturze aktualnie wyświetlanej klatki.
+     * Position on the texture of the currently displayed frame.
      */
     SDL_Rect src_rect;
     /**
-     * Typ obiektu.
+     * Type of object.
      */
     SpriteType type;
     /**
-     * Dokładna pozycja pozioma obiektu.
+     * Exact horizontal position of the object.
      */
     double pos_x;
     /**
-     * Dokładna pozycja pionowa obiektu.
+     * Exact vertical position of the object.
      */
     double pos_y;
 
 protected:
     /**
-     * Funkcja zwraca prostokąt przesunięty o wielokrotności rozmiaru prostokąta rect.
-     * @param rect - prostokąt bazowy
-     * @param x - przesunięcie poziome
-     * @param y - przesunięcie pionowe
-     * @return przesunięty prostokąt
+     * The function returns a rectangle shifted by multiples of the size of the rectangle rect.
+     * @param rect - base rectangle
+     * @param x - horizontal shift
+     * @param y - vertical shift
+      * @return shifted rectangle
      */
     SDL_Rect moveRect(const SDL_Rect &rect, int x, int y);
 
     /**
-     * Animacja odpowiadająca danemu typowi obiektu.
+     * Animation corresponding to a given object type.
      */
     const SpriteData* m_sprite;
     /**
-     * Czas wyświetlania obecnej klatki animacji.
+     * Time of displaying the current animation frame.
      */
     Uint32 m_frame_display_time;
     /**
-     * Numer obecnej klatki animacji.
+     * Number of the current animation frame.
      */
     int m_current_frame;
 };
 
 /**
- * Funkcja wyznaczająca częśc wspólną dwuch prostokątków
+ * Function determining the intersection of two rectangles
  * @param rect1
  * @param rect2
- * @return część wspólną, jeśli rect1 i rect2 nie mają części wspólnej prostokąt wyjściowy będzie miał ujemne wymiary
+ * @return the intersection, if rect1 and rect2 do not intersect the output rectangle will have negative dimensions
  */
 SDL_Rect intersectRect(SDL_Rect* rect1, SDL_Rect* rect2);
 
